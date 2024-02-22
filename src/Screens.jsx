@@ -13,16 +13,29 @@ export const possibleTileContents = [
   icons.GiDragonfly,
   icons.GiHummingbird,
   icons.GiFlowerEmblem,
-  icons.GiOpenBook,
+  icons.GiOpenBook
 ];
 
 export function StartScreen({ start }) {
   return (
-    <div>
-      <button onClick={start} className="bg-gray-400 text-white p-3">
-        Play
-      </button>
-    </div>
+    <>
+      <main className="h-screen w-full flex flex-col items-center justify-center">
+        <div className="w-4/5 rounded-lg mx-auto flex flex-col justify-center items-center p-3 bg-pink-100/50 text-pink-500 h-3/5">
+          <h1 className="text-4xl font-bold mb-10">Memory</h1>
+          <h2 className="text-lg font-semibold mb-10">
+            Flip over tiles looking for pairs
+          </h2>
+          <div>
+            <button
+              onClick={start}
+              className="bg-gradient-to-b from-pink-400 to-pink-500 rounded-full h-10 w-32 text-2xl font-semibold text-center text-white shadow-xl active:from-pink-500 active:to-pink-500"
+            >
+              Play
+            </button>
+          </div>
+        </div>
+      </main>
+    </>
   );
 }
 
@@ -76,7 +89,7 @@ export function PlayScreen({ end }) {
 
       if (alreadyFlippedTile.content === justFlippedTile.content) {
         confetti({
-          ticks: 100,
+          ticks: 100
         });
         newState = "matched";
       }
@@ -86,7 +99,7 @@ export function PlayScreen({ end }) {
         setTiles((prevTiles) => {
           const newTiles = prevTiles.map((tile) => ({
             ...tile,
-            state: tile.state === "flipped" ? newState : tile.state,
+            state: tile.state === "flipped" ? newState : tile.state
           }));
 
           // If all tiles are matched, the game is over.
@@ -102,19 +115,29 @@ export function PlayScreen({ end }) {
     setTiles((prevTiles) => {
       return prevTiles.map((tile, index) => ({
         ...tile,
-        state: i === index ? "flipped" : tile.state,
+        state: i === index ? "flipped" : tile.state
       }));
     });
   };
 
   return (
     <>
-      <div>
-        {getTiles(6).map((tile, i) => (
-          <Tile key={i} flip={() => flip(i)} {...tile} />
-        ))}
-      </div>
-      {tryCount}
+      <main className="h-screen w-full flex flex-col items-center justify-center">
+        <h2 className="text-lg font-semibold mb-10 text-blue-700">
+          Tries
+          <span className="ml-2 rounded-lg px-2.5 bg-blue-500/20">
+            {tryCount}
+          </span>
+        </h2>
+
+        <div className="w-4/5 rounded-lg mx-auto flex flex-col justify-center items-center p-3 bg-sky-100/50 h-fit">
+          <div className="grid grid-cols-4 w-full h-full gap-2">
+            {getTiles(16).map((tile, i) => (
+              <Tile key={i} flip={() => flip(i)} {...tile} />
+            ))}
+          </div>
+        </div>
+      </main>
     </>
   );
 }
