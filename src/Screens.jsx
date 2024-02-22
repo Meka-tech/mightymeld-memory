@@ -18,11 +18,24 @@ export const possibleTileContents = [
 
 export function StartScreen({ start }) {
   return (
-    <div>
-      <button onClick={start} className="bg-gray-400 text-white p-3">
-        Play
-      </button>
-    </div>
+    <>
+      <main className="w-full h-screen flex flex-col items-center justify-center">
+        <div className="w-4/5 rounded-lg ml-auto mr-auto flex flex-col justify-center items-center p-3 bg-rose-100/50 text-pink-500 h-3/5">
+          <h1 className="text-4xl font-bold mb-10">Memory</h1>
+          <h2 className="text-lg font-semibold mb-10">
+            Flip over tiles looking for pairs
+          </h2>
+          <div>
+            <button
+              onClick={start}
+              className="bg-gradient-to-b from-pink-400 to-pink-500 rounded-full h-10 w-32 text-2xl font-semibold text-center shadow-xl active:from-pink-500 active:to-pink-500 text-white"
+            >
+              Play
+            </button>
+          </div>
+        </div>
+      </main>
+    </>
   );
 }
 
@@ -109,12 +122,21 @@ export function PlayScreen({ end }) {
 
   return (
     <>
-      <div>
-        {getTiles(6).map((tile, i) => (
-          <Tile key={i} flip={() => flip(i)} {...tile} />
-        ))}
-      </div>
-      {tryCount}
+      <main className="w-full h-screen flex flex-col items-center justify-center">
+        <h2 className="text-lg font-semibold text-blue-700 mb-10">
+          Tries
+          <span className="ml-2 px-2.5 rounded-lg bg-blue-500/20">
+            {tryCount}
+          </span>
+        </h2>
+        <div className="w-4/5 rounded-lg ml-auto mr-auto flex flex-col justify-center items-center p-3 bg-blue-100/50 h-fit">
+          <div className="grid grid-cols-4 w-full h-full gap-2">
+            {getTiles(16).map((tile, i) => (
+              <Tile key={i} flip={() => flip(i)} {...tile} />
+            ))}
+          </div>
+        </div>
+      </main>
     </>
   );
 }
