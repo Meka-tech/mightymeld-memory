@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import confetti from "canvas-confetti";
 import * as icons from "react-icons/gi";
 import { Tile } from "./Tile";
@@ -42,15 +42,68 @@ export function StartScreen({ start }) {
 export function PlayScreen({ end }) {
   const [tiles, setTiles] = useState(null);
   const [tryCount, setTryCount] = useState(0);
+  const [failCount, setFailCount] = useState(0);
+  const [timer, setTimer] = useState(120);
+  const [isPlaying, setIsPlaying] = useState(true);
+  const [HintTile, setHintTile] = useState("");
+  const [hasHint, setHasHint] = useState(true);
+  const [hasWon, setHasWon] = useState(false);
+  const tileCount = 16;
 
-  const getTiles = (tileCount) => {
+  //
+
+  useEffect(() => {
+    if (isPlaying) {
+      const TimerInterval = setInterval(() => {
+        setTimer(timer - 1);
+      }, [1000]);
+
+      return () => clearInterval(TimerInterval);
+    }
+  }, [timer]);
+
+  useEffect(() => {
+    if (failCount === 5 || timer === 1) {
+      setIsPlaying(false);
+    }
+  }, [failCount, timer]);
+
+  const Restart = () => {
+    setFailCount(0);
+    setTryCount(0);
+    getTiles(true);
+    setTimer(120);
+    setHasHint(true);
+    setHintTile("");
+    setHasWon(false);
+    setIsPlaying(true);
+  };
+
+  const Endgame = () => {
+    end();
+  };
+
+  const Shuffle = () => {
+    const arrayCopy = [...tiles];
+
+    for (let i = arrayCopy.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arrayCopy[i], arrayCopy[j]] = [arrayCopy[j], arrayCopy[i]];
+    }
+
+    setTiles(arrayCopy);
+  };
+
+  const getTiles = (restart = false) => {
     // Throw error if count is not even.
     if (tileCount % 2 !== 0) {
       throw new Error("The number of tiles must be even.");
     }
 
     // Use the existing list if it exists.
-    if (tiles) return tiles;
+    if (!restart) {
+      if (tiles) return tiles;
+    }
 
     const pairCount = tileCount / 2;
 
@@ -92,6 +145,8 @@ export function PlayScreen({ end }) {
           ticks: 100
         });
         newState = "matched";
+      } else {
+        setFailCount(failCount + 1);
       }
 
       // After a delay, either flip the tiles back or mark them as matched.
@@ -104,7 +159,7 @@ export function PlayScreen({ end }) {
 
           // If all tiles are matched, the game is over.
           if (newTiles.every((tile) => tile.state === "matched")) {
-            setTimeout(end, 0);
+            setHasWon(true);
           }
 
           return newTiles;
@@ -120,22 +175,80 @@ export function PlayScreen({ end }) {
     });
   };
 
+  const GetHint = () => {
+    if (hasHint) {
+      let length = tiles.length;
+      setHintTile(tiles[Math.floor(Math.random(0, length + 1))]);
+      setHasHint(false);
+    }
+  };
+
+  getTiles();
   return (
     <>
-      <main className="h-screen w-full flex flex-col items-center justify-center">
-        <h2 className="text-lg font-semibold mb-10 text-blue-700">
-          Tries
-          <span className="ml-2 rounded-lg px-2.5 bg-blue-500/20">
-            {tryCount}
-          </span>
-        </h2>
-
+      <main className="h-screen w-full flex flex-col items-center justify-center relative overflow-hidden">
+        <div className="flex w-full items-center mb-10 px-4">
+          <h2 className="text-lg font-semibold  text-blue-700">
+            Tries
+            <span className="ml-2 rounded-lg px-2.5 bg-blue-500/20">
+              {tryCount}
+            </span>
+          </h2>
+          <h2 className="text-lg font-semibold ml-3 text-red-500">
+            Fails
+            <span className="ml-2 rounded-lg px-2.5 bg-red-500/10">
+              {failCount}/5
+            </span>
+          </h2>
+          <h2 className="text-lg font-semibold ml-auto text-emerald-500">
+            Time
+            <span className="ml-2 rounded-lg px-2.5 bg-emerald-500/10">
+              {timer}s
+            </span>
+          </h2>
+        </div>
         <div className="w-4/5 rounded-lg mx-auto flex flex-col justify-center items-center p-3 bg-sky-100/50 h-fit">
           <div className="grid grid-cols-4 w-full h-full gap-2">
-            {getTiles(16).map((tile, i) => (
-              <Tile key={i} flip={() => flip(i)} {...tile} />
+            {tiles?.map((tile, i) => (
+              <Tile
+                key={i}
+                flip={() => {
+                  isPlaying ? flip(i) : null;
+                }}
+                {...tile}
+                isPlaying={isPlaying}
+                hint={tile.content === HintTile.content}
+              />
             ))}
           </div>
+        </div>
+        <div className="flex w-full items-center mt-4 px-4">
+          <button
+            className="h-10 px-4 rounded-lg text-lg font-semibold bg-blue-500 text-white "
+            onClick={Restart}
+          >
+            {isPlaying ? "Restart" : "Play again"}
+          </button>
+          <button
+            className="h-10 px-4 rounded-lg text-lg font-semibold bg-red-500 text-white ml-2 "
+            onClick={Endgame}
+          >
+            End game
+          </button>
+          <button
+            className={`h-10 px-4 rounded-lg text-lg font-semibold text-white ml-auto ${
+              !hasHint ? "bg-emerald-500/30" : "bg-emerald-500 "
+            }`}
+            onClick={GetHint}
+          >
+            Hint
+          </button>
+          <button
+            className="h-10 px-4 rounded-lg text-lg font-semibold bg-sky-500 text-white ml-2"
+            onClick={Shuffle}
+          >
+            Shuffle
+          </button>
         </div>
       </main>
     </>

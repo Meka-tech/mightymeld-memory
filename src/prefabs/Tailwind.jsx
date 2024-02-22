@@ -21,3 +21,11 @@ export function Subheading() {
 export function TextSpan() {
   return <span className="ml-2 rounde-lg px-2.5">span</span>;
 }
+
+export function FlexBox() {
+  return <div className="flex w-full items-center"></div>;
+}
+
+export function Button() {
+  return <button className="h-10 px-4 rounded-lg ">Button</button>;
+}

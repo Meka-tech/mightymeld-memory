@@ -1,8 +1,17 @@
-export function Tile({ content: Content, flip, state }) {
+export function Tile({ content: Content, flip, state, hint, isPlaying }) {
   switch (state) {
     case "start":
       return (
-        <Back className="h-16 w-16 rounded-xl bg-blue-500/40" flip={flip} />
+        <Back
+          className={`h-16 w-16 rounded-xl ${
+            !isPlaying
+              ? "bg-blue-500/10"
+              : hint
+              ? "bg-indigo-500 animate-pulse"
+              : "bg-blue-500/40"
+          }`}
+          flip={flip}
+        />
       );
     case "flipped":
       return (
@@ -10,7 +19,7 @@ export function Tile({ content: Content, flip, state }) {
           <Content
             style={{
               width: "80%",
-              height: "80%"
+              height: "80%",
             }}
           />
         </Front>
@@ -21,7 +30,7 @@ export function Tile({ content: Content, flip, state }) {
           <Content
             style={{
               width: "80%",
-              height: "80%"
+              height: "80%",
             }}
           />
         </Matched>
