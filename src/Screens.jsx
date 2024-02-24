@@ -19,16 +19,16 @@ export const possibleTileContents = [
 export function StartScreen({ start }) {
   return (
     <>
-      <main className="h-screen w-full flex flex-col items-center justify-center">
+      <main className="w-full h-screen flex flex-col items-center justify-center">
         <div className="w-4/5 rounded-lg mx-auto flex flex-col justify-center items-center p-3 bg-pink-100/50 text-pink-500 h-3/5">
-          <h1 className="text-4xl font-bold mb-10">Memory</h1>
-          <h2 className="text-lg font-semibold mb-10">
+          <h1 className="font-bold text-4xl mb-10">Memory</h1>
+          <h2 className="font-semibold text-lg mb-10">
             Flip over tiles looking for pairs
           </h2>
           <div>
             <button
               onClick={start}
-              className="bg-gradient-to-b from-pink-400 to-pink-500 rounded-full h-10 w-32 text-2xl font-semibold text-center text-white shadow-xl active:from-pink-500 active:to-pink-500"
+              className="bg-gradient-to-b from-pink-400 to-pink-500 rounded-full h-10 w-32 text-2xl text-white font-semibold text-center shadow-xl active:from-pink-500 active:to-pink-500"
             >
               Play
             </button>
@@ -122,14 +122,13 @@ export function PlayScreen({ end }) {
 
   return (
     <>
-      <main className="h-screen w-full flex flex-col items-center justify-center">
-        <h2 className="text-lg font-semibold mb-10 text-indigo-500">
+      <main className="w-full h-screen flex flex-col items-center justify-center">
+        <h2 className="font-semibold text-lg mb-10 text-indigo-400">
           Tries
-          <span className="ml-2 rounded-lg px-2.5 bg-indigo-200">
+          <span className="ml-2 px-2.5 rounded-lg bg-indigo-200">
             {tryCount}
           </span>
         </h2>
-
         <div className="w-4/5 rounded-lg mx-auto flex flex-col justify-center items-center p-3 bg-indigo-50 h-fit">
           <div className="grid grid-cols-4 w-full h-full gap-2">
             {getTiles(16).map((tile, i) => (
