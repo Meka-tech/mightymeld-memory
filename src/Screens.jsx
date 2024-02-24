@@ -13,7 +13,7 @@ export const possibleTileContents = [
   icons.GiDragonfly,
   icons.GiHummingbird,
   icons.GiFlowerEmblem,
-  icons.GiOpenBook,
+  icons.GiOpenBook
 ];
 
 export function StartScreen({ start }) {
@@ -27,7 +27,7 @@ export function StartScreen({ start }) {
   }, []);
   return (
     <>
-      <main className="h-screen w-full flex flex-col items-center justify-center relative overflow-hidden">
+      <main className="h-screen w-full flex flex-col items-center justify-center relative overflow-hidden max-w-sm mx-auto">
         <div className="w-4/5 rounded-lg mx-auto flex flex-col justify-center items-center p-3 bg-pink-100/50 text-pink-500 h-3/5">
           <h1 className="text-4xl font-bold mb-10">Memory</h1>
           <h2 className="text-lg font-semibold mb-10">
@@ -71,7 +71,7 @@ export function StartScreen({ start }) {
               {leaderboard.map((item, i) => {
                 return (
                   <div
-                    className="w-full rounded-lg px-4 py-1 bg-pink-400 text-white flex items-center justify-between"
+                    className="w-full rounded-lg px-4 py-1 bg-pink-400 text-white flex items-center justify-between mb-2"
                     key={i}
                   >
                     <h2 className="font-bold text-lg ">{item.name}</h2>
@@ -113,13 +113,17 @@ export function PlayScreen({ end }) {
   useEffect(() => {
     if (localStorage.getItem("leaderboard")) {
       setLeaderboard(JSON.parse(localStorage.getItem("leaderboard")));
-      setBestTime(
-        leaderboard.find(
-          (entry) => entry.time === Math.max(...leaderboard.map((e) => e.time))
-        )
-      );
     }
   }, []);
+
+  useEffect(() => {
+    if (leaderboard.length > 0) {
+      const Time = leaderboard.find(
+        (entry) => entry.time === Math.max(...leaderboard.map((e) => e.time))
+      )?.time;
+      setBestTime(Time);
+    }
+  }, [leaderboard]);
 
   //timer countDown
   useEffect(() => {
@@ -229,7 +233,7 @@ export function PlayScreen({ end }) {
 
       if (alreadyFlippedTile.content === justFlippedTile.content) {
         confetti({
-          ticks: 100,
+          ticks: 100
         });
         newState = "matched";
       } else {
@@ -241,7 +245,7 @@ export function PlayScreen({ end }) {
         setTiles((prevTiles) => {
           const newTiles = prevTiles.map((tile) => ({
             ...tile,
-            state: tile.state === "flipped" ? newState : tile.state,
+            state: tile.state === "flipped" ? newState : tile.state
           }));
 
           // If all tiles are matched, the game is over.
@@ -261,7 +265,7 @@ export function PlayScreen({ end }) {
     setTiles((prevTiles) => {
       return prevTiles.map((tile, index) => ({
         ...tile,
-        state: i === index ? "flipped" : tile.state,
+        state: i === index ? "flipped" : tile.state
       }));
     });
   };
@@ -280,7 +284,7 @@ export function PlayScreen({ end }) {
 
   return (
     <>
-      <main className="h-screen w-full flex flex-col items-center justify-center relative overflow-hidden">
+      <main className="h-screen w-full flex flex-col items-center justify-center relative overflow-hidden max-w-sm mx-auto">
         <div
           className={`w-full flex items-center justify-center mb-10 absolute top-12 duration-150 ${
             isPlaying ? " -translate-x-full" : ""
@@ -300,9 +304,9 @@ export function PlayScreen({ end }) {
         </div>
 
         <div className="flex w-full items-center mb-10 px-4">
-          <h2 className="text-lg font-semibold  text-blue-700">
+          <h2 className="text-lg font-semibold  text-indigo-400">
             Tries
-            <span className="ml-2 rounded-lg px-2.5 bg-blue-500/20">
+            <span className="ml-2 rounded-lg px-2.5 bg-indigo-200">
               {tryCount}
             </span>
           </h2>
@@ -319,7 +323,7 @@ export function PlayScreen({ end }) {
             </span>
           </h2>
         </div>
-        <div className="w-4/5 rounded-lg mx-auto flex flex-col justify-center items-center p-3 bg-sky-100/50 h-fit">
+        <div className="w-4/5 rounded-lg mx-auto flex flex-col justify-center items-center p-3 bg-indigo-50 h-fit">
           <div className="grid grid-cols-4 w-full h-full gap-2">
             {tiles?.map((tile, i) => (
               <Tile
@@ -336,7 +340,7 @@ export function PlayScreen({ end }) {
         </div>
         <div className="flex w-full items-center mt-4 px-4">
           <button
-            className="h-10 px-2 rounded-lg text-lg font-semibold bg-blue-500 text-white "
+            className="h-10 px-2 rounded-lg text-lg font-semibold bg-indigo-500 text-white "
             onClick={Restart}
           >
             {isPlaying ? "Restart" : "Play again"}

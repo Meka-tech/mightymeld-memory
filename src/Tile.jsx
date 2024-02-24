@@ -3,19 +3,19 @@ export function Tile({ content: Content, flip, state, hint, isPlaying }) {
     case "start":
       return (
         <Back
-          className={`h-16 w-16 rounded-xl ${
+          className={`h-16 w-16 rounded-lg ${
             !isPlaying
-              ? "bg-blue-500/10"
+              ? "bg-indigo-500/10"
               : hint
               ? "bg-indigo-500 animate-pulse"
-              : "bg-blue-500/40"
+              : "bg-indigo-300"
           }`}
           flip={flip}
         />
       );
     case "flipped":
       return (
-        <Front className="flex items-center justify-center h-16 w-16 bg-indigo-500 rounded-xl text-white">
+        <Front className="flex items-center justify-center h-16 w-16 bg-indigo-500 rounded-lg text-white">
           <Content
             style={{
               width: "80%",
