@@ -13,7 +13,7 @@ export const possibleTileContents = [
   icons.GiDragonfly,
   icons.GiHummingbird,
   icons.GiFlowerEmblem,
-  icons.GiOpenBook
+  icons.GiOpenBook,
 ];
 
 export function StartScreen({ start }) {
@@ -89,7 +89,7 @@ export function PlayScreen({ end }) {
 
       if (alreadyFlippedTile.content === justFlippedTile.content) {
         confetti({
-          ticks: 100
+          ticks: 100,
         });
         newState = "matched";
       }
@@ -99,7 +99,7 @@ export function PlayScreen({ end }) {
         setTiles((prevTiles) => {
           const newTiles = prevTiles.map((tile) => ({
             ...tile,
-            state: tile.state === "flipped" ? newState : tile.state
+            state: tile.state === "flipped" ? newState : tile.state,
           }));
 
           // If all tiles are matched, the game is over.
@@ -115,7 +115,7 @@ export function PlayScreen({ end }) {
     setTiles((prevTiles) => {
       return prevTiles.map((tile, index) => ({
         ...tile,
-        state: i === index ? "flipped" : tile.state
+        state: i === index ? "flipped" : tile.state,
       }));
     });
   };
@@ -123,14 +123,14 @@ export function PlayScreen({ end }) {
   return (
     <>
       <main className="h-screen w-full flex flex-col items-center justify-center">
-        <h2 className="text-lg font-semibold mb-10 text-blue-700">
+        <h2 className="text-lg font-semibold mb-10 text-indigo-500">
           Tries
-          <span className="ml-2 rounded-lg px-2.5 bg-blue-500/20">
+          <span className="ml-2 rounded-lg px-2.5 bg-indigo-200">
             {tryCount}
           </span>
         </h2>
 
-        <div className="w-4/5 rounded-lg mx-auto flex flex-col justify-center items-center p-3 bg-sky-100/50 h-fit">
+        <div className="w-4/5 rounded-lg mx-auto flex flex-col justify-center items-center p-3 bg-indigo-50 h-fit">
           <div className="grid grid-cols-4 w-full h-full gap-2">
             {getTiles(16).map((tile, i) => (
               <Tile key={i} flip={() => flip(i)} {...tile} />

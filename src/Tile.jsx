@@ -2,7 +2,7 @@ export function Tile({ content: Content, flip, state }) {
   switch (state) {
     case "start":
       return (
-        <Back className="h-16 w-16 rounded-xl bg-blue-500/40" flip={flip} />
+        <Back className="h-16 w-16 rounded-xl bg-indigo-300" flip={flip} />
       );
     case "flipped":
       return (
@@ -10,18 +10,18 @@ export function Tile({ content: Content, flip, state }) {
           <Content
             style={{
               width: "80%",
-              height: "80%"
+              height: "80%",
             }}
           />
         </Front>
       );
     case "matched":
       return (
-        <Matched className="flex items-center justify-center h-16 w-16 text-blue-500/10">
+        <Matched className="flex items-center justify-center h-16 w-16 text-indigo-300">
           <Content
             style={{
               width: "80%",
-              height: "80%"
+              height: "80%",
             }}
           />
         </Matched>
