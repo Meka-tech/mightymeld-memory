@@ -13,7 +13,7 @@ export const possibleTileContents = [
   icons.GiDragonfly,
   icons.GiHummingbird,
   icons.GiFlowerEmblem,
-  icons.GiOpenBook
+  icons.GiOpenBook,
 ];
 
 export function StartScreen({ start }) {
@@ -229,7 +229,7 @@ export function PlayScreen({ end }) {
 
       if (alreadyFlippedTile.content === justFlippedTile.content) {
         confetti({
-          ticks: 100
+          ticks: 100,
         });
         newState = "matched";
       } else {
@@ -241,7 +241,7 @@ export function PlayScreen({ end }) {
         setTiles((prevTiles) => {
           const newTiles = prevTiles.map((tile) => ({
             ...tile,
-            state: tile.state === "flipped" ? newState : tile.state
+            state: tile.state === "flipped" ? newState : tile.state,
           }));
 
           // If all tiles are matched, the game is over.
@@ -261,7 +261,7 @@ export function PlayScreen({ end }) {
     setTiles((prevTiles) => {
       return prevTiles.map((tile, index) => ({
         ...tile,
-        state: i === index ? "flipped" : tile.state
+        state: i === index ? "flipped" : tile.state,
       }));
     });
   };
@@ -336,19 +336,19 @@ export function PlayScreen({ end }) {
         </div>
         <div className="flex w-full items-center mt-4 px-4">
           <button
-            className="h-10 px-4 rounded-lg text-lg font-semibold bg-blue-500 text-white "
+            className="h-10 px-2 rounded-lg text-lg font-semibold bg-blue-500 text-white "
             onClick={Restart}
           >
             {isPlaying ? "Restart" : "Play again"}
           </button>
           <button
-            className="h-10 px-4 rounded-lg text-lg font-semibold bg-red-500 text-white ml-2 "
+            className="h-10 px-2 rounded-lg text-lg font-semibold bg-red-500 text-white ml-2 "
             onClick={Endgame}
           >
             End game
           </button>
           <button
-            className={`h-10 px-4 rounded-lg text-lg font-semibold text-white ml-auto ${
+            className={`h-10 px-2 rounded-lg text-lg font-semibold text-white ml-auto ${
               !hasHint ? "bg-emerald-500/30" : "bg-emerald-500 "
             }`}
             onClick={GetHint}
@@ -356,7 +356,7 @@ export function PlayScreen({ end }) {
             Hint
           </button>
           <button
-            className="h-10 px-4 rounded-lg text-lg font-semibold bg-sky-500 text-white ml-2"
+            className="h-10 px-2 rounded-lg text-lg font-semibold bg-sky-500 text-white ml-2"
             onClick={Shuffle}
           >
             Shuffle
